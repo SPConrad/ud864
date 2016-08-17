@@ -194,7 +194,7 @@
             position: google.maps.ControlPosition.TOP_LEFT,
             drawingModes: [
               google.maps.drawing.OverlayType.POLYGON
-            ]
+              ]
           }
         });
 
@@ -250,6 +250,7 @@
           if (polygon) {
             polygon.setMap(null);
             hideListings(markers);
+
           }
           // Switching the drawing mode to the HAND (i.e., no longer drawing).
           drawingManager.setDrawingMode(null);
@@ -359,19 +360,36 @@
       // and shows only the ones within it. This is so that the
       // user can specify an exact area of search.
       function searchWithinPolygon() {
+      var areaBounds = [];
+      //console.log(polygon.getPath().getArray());
+      for (var i = 0; i < polygon.getPath().getArray().length; i++){
+        var position = new google.maps.LatLng(polygon.getPath().getArray()[i].lat(), polygon.getPath().getArray()[i].lng());
+        areaBounds.push(position);
+
+      }
+
+      var area = google.maps.geometry.spherical.computeArea(areaBounds);
+      console.log(area);
+
+      var newArea = google.maps.geometry.spherical.computeArea(polygon.getPath());
+      window.alert(area + " sq meters");
+
+
         for (var i = 0; i < markers.length; i++) {
           if (google.maps.geometry.poly.containsLocation(markers[i].position, polygon)) {
             markers[i].setMap(map);
+
           } else {
             markers[i].setMap(null);
           }
+
         }
       }
     </script>
 
     <script async defer
         src=
-        "https://maps.googleapis.com/maps/api/js?libraries=geometry,drawing&key=MYAPIKEY&v=3&callback=initMap">
+        "https://maps.googleapis.com/maps/api/js?libraries=geometry,drawing&key=AIzaSyCv8zOyCn_cce5C3JTWyMmycO1xeRYxRG8&v=3&callback=initMap">
     </script>
 
   </body>
